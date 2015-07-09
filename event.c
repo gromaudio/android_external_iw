@@ -367,7 +367,7 @@ struct wait_event {
 	struct print_event_args *pargs;
 };
 
-static int wait_event(struct nl_msg *msg, void *arg)
+static int wait_event_cb(struct nl_msg *msg, void *arg)
 {
 	struct wait_event *wait = arg;
 	struct genlmsghdr *gnlh = nlmsg_data(nlmsg_hdr(msg));
@@ -443,7 +443,7 @@ __u32 __do_listen_events(struct nl80211_state *state,
 		wait_ev.cmds = waits;
 		wait_ev.n_cmds = n_waits;
 		wait_ev.pargs = args;
-		nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, wait_event, &wait_ev);
+		nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, wait_event_cb, &wait_ev);
 	} else
 		nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, print_event, args);
 
